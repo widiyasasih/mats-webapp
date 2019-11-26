@@ -5,8 +5,7 @@
         {
             $data['title'] = 'Member Login';
             // set rules of validation error
-            $this->form_validation->set_rules('username', 'Username', 'required');
-            $this->form_validation->set_rules('password', 'Password', 'required');
+            // edited
             if ($this->form_validation->run() === FALSE) {
                 // if not field then keep on login view
                 $this->load->view('doors/login', $data);
