@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="row">
       <input type="hidden" id="date_current" name="date_current" value="">
-        <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="col-lg-4 col-md-6 col-sm-6">
           <div class="card card-stats">
             <div class="card-header card-header-success card-header-icon">
               <div class="card-icon">
@@ -27,15 +27,15 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="col-lg-4 col-md-6 col-sm-6">
           <div class="card card-stats">
-            <div class="card-header card-header-danger card-header-icon">
+            <div class="card-header card-header-warning card-header-icon">
               <div class="card-icon">
                 <i class="material-icons">confirmation_number</i>
               </div>
               <p class="card-category">Total Slip Pengajuan</p>
-              <h3 class="card-title"><?php echo $tot_sps;?>
-                <small></small>
+              <h3 class="card-title"><?php echo $total_sps;?><br>
+                <small><?php echo '(Rp.'.number_format($nominal_sps, 0,',','.').')';?></small>
               </h3>
             </div>
             <div class="card-footer">
@@ -44,14 +44,14 @@
               </div>
             </div>
           </div>
-        </div> -->
-        <div class="col-lg-6 col-md-6 col-sm-6">
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6">
           <div class="card card-stats">
             <div class="card-header card-header-danger card-header-icon">
               <div class="card-icon">
                 <i class="material-icons">attach_money</i>
               </div>
-              <p class="card-category">Total Anggaran Dana</p>
+              <p class="card-category">Total Rancangan Anggaran</p>
               <h3 class="card-title"><?php echo 'Rp.'.number_format($tot_cost,0,',','.');?>
               </h3>
             </div>
@@ -99,7 +99,7 @@
       <div class="row">
             <div class="col-lg-6 col-md-12">
               <div class="card">
-                <div class="card-header card-header-tabs card-header-info">
+                <div class="card-header card-header-tabs card-header-danger">
                   <div class="nav-tabs-navigation">
                     <div class="nav-tabs-wrapper">
                       <h4 class="card-title">Deadline Purchase Order</h4>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="card-body table-responsive">
                   <table class="table table-hover">
-                    <thead class="text-info text-center">
+                    <thead class="text-danger text-center">
                     <?php 
                       if (!empty($deadline_pos)) {
                         echo '
@@ -136,7 +136,7 @@
                         <td>Rp.</td>
                         <td class="text-right"><?php echo number_format($deadline_po['result']-($deadline_po['result']*$tax),0,',','.');?></td>
                         <td class="text-center">
-                          <a href="<?php echo site_url('needs/view_po/'.$deadline_po['po_id']);?>" style="color:#06B0C5;" title="View">
+                          <a href="<?php echo site_url('needs/view_po/'.$deadline_po['po_id']);?>" style="color:#E63C38;" title="View">
                             <i class="material-icons" title="Lihat Purchase Order <?php echo $deadline_po['no'];?>">label_important</i>
                             <div class="ripple-container"></div>
                           </a>
@@ -150,13 +150,13 @@
             </div>
             <div class="col-lg-6 col-md-12">
               <div class="card">
-                <div class="card-header card-header-warning">
+                <div class="card-header card-header-info">
                   <h4 class="card-title">Rekap Bulanan</h4>
                   <p class="card-category">Tahun <?php echo $date['year'];?></p>
                 </div>
                 <div class="card-body table-responsive">
                   <table class="table table-hover">
-                    <thead class="text-warning">
+                    <thead class="text-info">
                     <?php 
                     if (!empty($needs)) {
                       echo '
@@ -179,7 +179,7 @@
                         <td class="text-right" width="5px">Rp.</td>
                         <td class="text-right" style="padding-right:0px;"><?php echo number_format($need['nominals'],0,',','.');?></td>
                         <td class="text-center">
-                          <a href="<?php echo site_url('needs/recap/'.$need['dateneed_id']);?>" style="color:#FC9006;" title="View">
+                          <a href="<?php echo site_url('needs/recap/'.$need['dateneed_id']);?>" style="color:#06B0C5;" title="View">
                             <i class="material-icons" title="Lihat Rekap Bulan <?php echo $need['mon'];?>">label_important</i>
                             <div class="ripple-container"></div>
                           </a>

@@ -169,6 +169,23 @@
                         </a>
                       </li>
                     </ul>
+                    </ul><ul class="navbar-nav pull-right">
+                      <li class="nav-item dropdown">
+                        <a class="nav-link" href="<?php echo site_url('needs/all_sp/'.$date['date_id'])?>">
+                          <i title="Semua Slip Pengajuan" class="material-icons">confirmation_number</i>
+                          <p class="d-lg-none d-md-block">
+                            Semua Slip Pengajuan
+                          </p>
+                        </a>
+                      </li>
+                    </ul>
+                    </ul><ul class="navbar-nav pull-right">
+                      <li class="nav-item dropdown">
+                        <a class="nav-link">
+                          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+                        </a>
+                      </li>
+                    </ul>
                     <!-- <ul class="navbar-nav pull-right">
                       <li class="nav-item dropdown">
                         <a class="nav-link" href="#print">
@@ -182,14 +199,14 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="card-body text-left">
+                  <div class="card-body text-left text-success">
                   <div class="row">
                     <div class="table-responsive">
-                    <table class="table">
+                    <table class="table ">
                       <?php 
                       if (!empty($pos)) {
                         echo '
-                        <thead class=" text-primary">
+                        <thead class=" text-success">
                           <th class="text-center">
                             No. PO
                           </th>
@@ -200,7 +217,7 @@
                             Maksimal Delivery
                           </th>
                           <th class="text-center">
-                            Dibuat
+                          Dibuat
                           </th>
                           <th class="text-center">
                             Jumlah SP
@@ -248,18 +265,21 @@
                               <i class="material-icons">confirmation_number</i>
                               <div class="ripple-container"></div>
                             </a> &nbsp; &nbsp;
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                              <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/add_sp/'.$po['id']);?>">Tambah SP</a>
-                              <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/list_sp/'.$po['id']);?>">Lihat list SP</a>
+                            <div class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdownProfile">
+                              <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/list_sp/'.$po['po_id']);?>">Lihat list SP</a>
+                              <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/add_sp/'.$po['po_id']);?>">Tambah SP</a>
                             </div>
                             </span>
                           </td>
+                          <!-- <td class="text-left">  
+                            Rp. <?php echo number_format($po['result']-($tax*$po['result']),0,',','.');?>
+                          </td> -->
                           <td class="text-center">
-                            <a href="<?php echo site_url('needs/view_po/'.$po['id']);?>" style="color:#22bab0;" title="View">
+                            <a href="<?php echo site_url('needs/view_po/'.$po['po_id']);?>" style="color:#22bab0;" title="View">
                               <i class="material-icons">visibility</i>
                               <div class="ripple-container"></div>
                             </a> &nbsp; &nbsp;
-                            <a href="<?php echo site_url('needs/print_po/'.$po['id']);?>" title="Print PO"  target="_BLANK">
+                            <a href="<?php echo site_url('needs/print_po/'.$po['po_id']);?>" title="Print PO"  target="_BLANK">
                                 <i class="material-icons">print</i>
                                 <div class="ripple-container"></div>
                             </a> &nbsp; &nbsp;
@@ -271,8 +291,8 @@
                             </p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                                <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/edit_po/'.$date['date_id'].'/'.$po['id']);?>">Edit</a>
-                                <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/delete_po/'.$date['date_id'].'/'.$po['id']);?>">Delete</a>
+                                <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/edit_po/'.$date['date_id'].'/'.$po['po_id']);?>">Edit</a>
+                                <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/delete_po/'.$date['date_id'].'/'.$po['po_id']);?>">Delete</a>
                             </div>
                             </span>
                           </td>

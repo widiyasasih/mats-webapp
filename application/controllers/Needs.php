@@ -42,6 +42,9 @@
             $data['date'] = $this->needs_model->get_data($date_id);
             $data['model_unselected'] = $this->needs_model->get_model_unselected($date_id);
             $data['pos'] = $this->needs_model->get_po($date_id);
+            // $data['sps'] = $this->needs_model->get_sp_count($date_id);
+            $get_ppn = $this->cv_profile_model->get_ppn();
+		    $data['tax'] = $get_ppn['tax_ppn']/100;
             // var_dump($data['pos']);
             // var_dump($data['sps']);
             // var_dump($date_id);
@@ -343,7 +346,7 @@
             $data['branchs'] = $this->cv_branchs_model->get_data();
             $data['title'] = 'Tambah Purchase Order Bulan '.$data['date']['month'].' '.$data['date']['year'];
             $data['model_unselected'] = $this->needs_model->get_model_unselected($date_id);
-            // var_dump($data['persons']);
+            var_dump($data['items']);
             
             //-----> sum nominal
             $sum_nominal = array();
@@ -405,6 +408,9 @@
             $data['items_po'] = $this->needs_model->view_items_po($id);
             $data['sum'] = $this->needs_model->get_sum_po($id);
             $data['max_mod_at'] = max($modified_at);
+            $get_ppn = $this->cv_profile_model->get_ppn();
+		    $data['tax'] = $get_ppn['tax_ppn']/100; 
+		    $data['tax_ppn'] = $get_ppn['tax_ppn'];
 
             // var_dump($id);
             // var_dump($data['max_mod_at']);
@@ -534,6 +540,32 @@
             redirect('needs/view/'.$date_id);
         }
 
+        public function all_sp($date_id = TRUE)
+        {
+            if(!$this->session->userdata('logged_in')){
+                redirect('login');
+            }
+
+            $data['title'] = 'Semua Slip Pengajuan';
+            // $data['po_id'] = $id;
+            $data['pos'] = $this->needs_model->get_po($date_id);
+            $data['date'] = $date_id;
+            $data['sps'] = $this->needs_model->get_all_sp($date_id);
+            
+            // $modified_at = $this->needs_model->get_max_modified_at($id);
+            // $data['items_po'] = $this->needs_model->view_items_po($id);
+            // $data['sum'] = $this->needs_model->get_sum_po($id);
+            // // $data['max_mod_at'] = max($modified_at);
+
+            // var_dump($data['sps']);
+            // var_dump($data['sps']);
+            // var_dump($modified_at);
+            
+            $this->load->view('templates/header', $data);
+            $this->load->view('needs/all_sp', $data);
+            $this->load->view('templates/footer');
+        }
+
         public function list_sp($id = TRUE)
         {
             if(!$this->session->userdata('logged_in')){
@@ -550,8 +582,8 @@
             // $data['sum'] = $this->needs_model->get_sum_po($id);
             // // $data['max_mod_at'] = max($modified_at);
 
+            // var_dump($data['po_id']);
             // var_dump($data['sps']);
-            // var_dump($data['max_mod_at']);
             // var_dump($modified_at);
             
             $this->load->view('templates/header', $data);
@@ -564,7 +596,7 @@
             if(!$this->session->userdata('logged_in')){
                 redirect('login');
             }
-            
+            // var_dump($id);
             $data['alert'] = $this->form_validation->set_rules('date_sub', 'Tanggal Pengajuan', 'required', 
                 array('required' => 'Tanggal Pengajuan harus dipilih'));
             $data['alert'] = $this->form_validation->set_rules('description', 'Deskripsi', 'required', 
@@ -574,8 +606,9 @@
             $data['po'] = $this->needs_model->view_po($id);
             $data['id_sp'] = $this->needs_model->get_id_sp();
             $data['items'] = $this->needs_model->get_items_po($id);
-            // var_dump($data['po']);
-            var_dump($data['id_sp']);
+            // var_dump($data['items']);
+            // $id_po = $id;
+            // var_dump($_POST);
             if ($this->form_validation->run() === FALSE) {
                 $this->load->view('templates/header', $data);
                 $this->load->view('needs/add_sp', $data);
@@ -583,12 +616,12 @@
             }else {
                 if(isset($_POST['submit']))
                 {
-                    // var_dump($_POST);
+                    
                     $this->needs_model->create_sp();
                     $this->needs_model->insert_items_sp();
-                    // $id_po = $_POST['po_id'];
+                    $id_po = $_POST['po_id'];
+                    redirect('needs/list_sp/'.$id_po);
                 }
-                redirect('needs/list_sp/'.$id);
             }
         }
         
@@ -689,7 +722,12 @@
             }
 
             $this->needs_model->delete_sp($id);
-            redirect('needs/list_sp/'.$po_id);
+            if ($po_id == TRUE) {
+                redirect('needs/list_sp/'.$po_id);
+            }else {
+                redirect('needs/all_sp/'.$id);
+            }
+            
         }
 
         public function print_sp($id = TRUE)

@@ -14,6 +14,14 @@
             // var_dump();
         }
         
+        public function get_max_month($year = TRUE)
+        {
+            $this->db->select_max('d.month');
+            $query = $this->db->get_where('dateneeds d', array('d.year' => $year));
+            return $query->row_array();
+            // var_dump();
+        }
+
         public function get_date($month = TRUE, $year = TRUE)
         {
             $this->db->select('d.id date_id, d.*, m.*');

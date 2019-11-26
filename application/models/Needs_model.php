@@ -42,7 +42,7 @@
                 return $query->row_array();
             }
         }
-
+ 
         public function get_items_by_model($id = TRUE)
         {
             $this->db->order_by('model');
@@ -612,19 +612,51 @@
 
         public function get_po($date_id)
         {
-            $this->db->select('p.*, s.supplier supplier_name, count(ss.id) ss');
-            $this->db->group_by('p.id');
-            $this->db->order_by('p.id', 'DESC');
+            // $this->db->select('
+            //     po.*, po.id po_id, v.vendor, s.supplier supplier_name, po.delivery deliv_max,
+            //     d.*, d.id date_id, ip.*, ip.id ip_id, 
+            //     sum(Concat(ip.qty*ip.custom_price)) result');
+            // $this->db->join('purchase_order po', 'po.id = ip.po_id', 'LEFT OUTER');
+            // $this->db->join('vendors as v', 'v.id = po.vendor_id' ,'LEFT OUTER');
+            // $this->db->join('suppliers as s', 's.id = po.supplier_id' ,'LEFT OUTER');
+            // $this->db->join('dateneeds d', 'd.id = po.dateneed_id', 'LEFT OUTER');
+            // // $this->db->join('submission_slip as ss', 'ss.po_id = po.id' ,'LEFT OUTER');
+            // $this->db->where('po.dateneed_id', $date_id);
+            // $this->db->order_by('deliv_max', 'DESC');
+            // $this->db->group_by('po.id');
+            // $query = $this->db->get_where('items_po ip')->result_array();;
+
+            $this->db->select('p.*, p.id po_id, s.supplier supplier_name, ss.id ss_id,  count(ss.id) ss, d.year, cv.*, m.*');
             $this->db->join('suppliers as s', 's.id = p.supplier_id' ,'LEFT');
-            $this->db->join('vendors as v', 'v.id = p.vendor_id' ,'LEFT');
-            $this->db->join('personincharges as pc', 'pc.id = p.created_by' ,'LEFT');
+            // $this->db->join('vendors as v', 'v.id = p.vendor_id' ,'LEFT');
+            // $this->db->join('personincharges as pc', 'pc.id = p.created_by' ,'LEFT');
             $this->db->join('dateneeds as d', 'd.id = p.dateneed_id' ,'LEFT');
-            $this->db->join('cv_branchs as b', 'b.id = p.city_sender_id' ,'LEFT');
+            $this->db->join('months as m', 'm.id = d.month' ,'LEFT');
+            // $this->db->join('cv_branchs as b', 'b.id = p.city_sender_id' ,'LEFT');
             $this->db->join('main_cv_profile as cv', 'cv.id = p.cv_id' ,'LEFT');
             $this->db->join('submission_slip as ss', 'ss.po_id = p.id' ,'LEFT');
+            // $this->db->join('items_po ip', 'ip.po_id = p.id' ,'LEFT');
             // $this->db->join('items_sp as isp', 'isp.sp_id = ss.id' ,'LEFT');
             // $this->db->join('items_po as ip', 'ip.po_id = p.id' ,'LEFT');
+            $this->db->order_by('p.id', 'DESC');
+            $this->db->group_by('p.id');
             $query = $this->db->get_where('purchase_order p', array('dateneed_id' => $date_id))->result_array();
+            return $query;
+            // var_dump($query);
+        }
+
+        public function get_sp($date_id)
+        {
+            $this->db->select('
+                po.*, po.id po_id, v.vendor, s.supplier supplier_name, po.delivery deliv_max,
+                d.*, d.id date_id, ip.*, ip.id ip_id, 
+                count(sp.id) count_sp');
+            $this->db->join('dateneeds d', 'd.id = po.dateneed_id', 'LEFT OUTER');
+            $this->db->join('submission_slip as ss', 'ss.po_id = po.id' ,'LEFT OUTER');
+            $this->db->where('po.dateneed_id', $date_id);
+            $this->db->order_by('deliv_max', 'DESC');
+            $this->db->group_by('po.id');
+            $query = $this->db->get_where('purchase_order po')->result_array();;
             return $query;
             // var_dump($query);
         }
@@ -745,15 +777,6 @@
             return $query;
         }
 
-        public function get_sp($id = TRUE)
-        {
-            $this->db->select('ss.*, ss.id sp_id, po.*, ss.description');
-            $this->db->join('purchase_order po', 'po.id=ss.po_id', 'LEFT OUTER');
-            $query = $this->db->get_where('submission_slip ss', array('ss.id' => $id))->row_array();
-            return $query;
-            // var_dump($id);
-        }
-
         public function get_items_sp_for_edit($id = TRUE)
         {
             $this->db->select('ip.id ip_id, ip.qty qty_po, ip.custom_price, ip.po_id, isp.*, isp.id isp_id, i.item_name, i.id item_id, po.*, u.unit unit');
@@ -838,7 +861,7 @@
                                 SELECT 
                                     po.id po_id, 
                                     i.item_name item_name, i.id item_id, 
-                                    sp.id sp_id, sp.description, sp.date_submission date_submission,
+                                    sp.id sp_id, sp.po_id id_po, sp.description, sp.date_submission date_submission,
                                     isp.qty qty, isp.man_qty man_qty,
                                     ip.custom_price custom_price,
                                     u.username created_by_nm
@@ -848,8 +871,39 @@
                                 LEFT OUTER JOIN purchase_order po ON po.id=ip.po_id
                                 LEFT OUTER JOIN submission_slip sp ON sp.id=isp.sp_id
                                 LEFT OUTER JOIN users u ON u.id=sp.created_by
-                                WHERE po.id = '.$id.' AND (po.id != 0 AND sp.id != 0)
                              ) r
+                             WHERE (po_id = '.$id.' AND id_po = '.$id.') AND (po_id != 0 AND sp_id != 0)
+                             GROUP BY sp_id
+                             ');
+            return $query->result_array();
+            // var_dump($query);
+        }
+
+        public function get_all_sp($id = TRUE)
+        {
+            $query = $this->db->query('
+                             SELECT r.*, count(r.item_id) items, 
+                                sum(if(r.man_qty = 0, (r.custom_price*r.qty), (r.custom_price)*(r.man_qty))) nominals,
+                                sum(if(r.man_qty = 0, 1*r.qty, 1*man_qty)) pcs
+                             FROM (
+                                SELECT 
+                                    po.id po_id, po.no no, cv.initial initial, m.month month, m.romawi romawi, d.year year,
+                                    i.item_name item_name, i.id item_id, 
+                                    sp.id sp_id, sp.po_id id_po, sp.description, sp.date_submission date_submission,
+                                    isp.qty qty, isp.man_qty man_qty,
+                                    ip.custom_price custom_price,
+                                    u.username created_by_nm
+                                FROM items i
+                                LEFT OUTER JOIN items_sp isp ON isp.item_id=i.id
+                                LEFT OUTER JOIN items_po ip ON ip.item_id=i.id
+                                LEFT OUTER JOIN purchase_order po ON po.id=ip.po_id
+                                LEFT OUTER JOIN submission_slip sp ON sp.id=isp.sp_id
+                                LEFT OUTER JOIN dateneeds d ON d.id=po.dateneed_id
+                                LEFT OUTER JOIN months m ON m.id=d.month
+                                LEFT OUTER JOIN main_cv_profile cv ON cv.id=po.cv_id
+                                LEFT OUTER JOIN users u ON u.id=sp.created_by
+                             ) r
+                             WHERE po_id != 0 AND sp_id != 0
                              GROUP BY sp_id
                              ');
             return $query->result_array();

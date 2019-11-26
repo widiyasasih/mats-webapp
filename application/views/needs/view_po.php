@@ -263,13 +263,13 @@
                                     </tr>
                                     <tr>
                                         <td colspan="7" style="border: 1px solid black;">
-                                            PPN 10%
+                                            PPN <?php echo $tax_ppn;?>%
                                         </td>
                                         <td class="text-left" style="border-right: solid 1px transparent; border-bottom: solid 1px black; color: black;">
                                             Rp.
                                         </td>
                                         <td class=" text-right" style="border: 1px solid black;">
-                                            <?php echo number_format((10/100)*$sum['nominals'],2,',','.');?>
+                                            <?php echo number_format($tax*$sum['nominals'],2,',','.');?>
                                         </td>
                                     </tr>
                                     <tr style="font-weight: bold;">
@@ -280,7 +280,7 @@
                                             Rp.
                                         </td>
                                         <td class=" text-right" style="-webkit-print-color-adjust: exact !important;background-color:#fafafa !important;border: 1px solid black;">
-                                           <?php echo number_format($sum['nominals']-((10/100)*$sum['nominals']),2,',','.');?>
+                                           <?php echo number_format($sum['nominals']-($tax*$sum['nominals']),2,',','.');?>
                                         </td>
                                     </tr>
                                 </tbody>

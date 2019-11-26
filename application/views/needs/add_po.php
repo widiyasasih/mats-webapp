@@ -113,7 +113,7 @@
                         <input class="form-control" id="today_date" type="date" name="sender_date">
                         <font color="red"><i><?php echo form_error('sender_date', '<div class="error">', '</div>'); ?></i></font>
                       </div>
-                    </div>
+                    </div> 
                     <div class="col-md-12">
                       <div class="form-group">
                         <label class="bmd-label-floating" for="exampleFormControlSelect1" style="font-size:11px;">Diketahui Oleh &nbsp<font color="red">*</font></label>
@@ -166,7 +166,7 @@
                           Jumlah Anggaran
                         </th>
                         <th class="text-center">
-                          Qty (<font color="red">***</font>)
+                          Qty (<font color="red">**</font>)
                         </th>
                         <th class="text-center">
                           Harga Manual (<font color="red">*</font>)
@@ -186,6 +186,7 @@
                               </label>
                                 <input type="hidden" name="item[<?php echo $key; ?>]" value="<?php echo $item['item_id']; ?>">
                                 <input type="hidden" name="date" value="<?php echo $date['date_id']; ?>">
+                                <input type="hidden" name="po_id" value="<?php echo $date['po_id']; ?>">
                             </div>
                           </td>
                           <td class="">
@@ -220,7 +221,7 @@
                             <input class="<?php echo 'prc'.$x++; ?> text-center" type="hidden" value="<?php echo $item['totals'];?>" style="width: 100px;">
                           </div>
                           <td class="form-group text-center">
-                            Rp. <input class="<?php echo 'man'.$z++; ?> text-center" type="number" style="width: 100px;" name="manualprice[<?php echo $key;?>]">
+                            Rp. <input class="<?php echo 'man'.$z++; ?> text-center" value="" type="number" style="width: 100px;" name="manualprice[<?php echo $key;?>]">
                           </td>
                           <td class="form-group">
                             <font color="#9C27B0"><b> 
@@ -296,10 +297,6 @@
                   </tr>
                   <tr>
                     <td><font color="red">**</font></td>
-                    <td>&nbsp harga manual</td>
-                  </tr>
-                  <tr>
-                    <td><font color="red">***</font></td>
                     <td>&nbsp jumlah yang dibutuhkan</td>
                   </tr>
                   </table>

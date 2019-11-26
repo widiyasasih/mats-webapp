@@ -115,6 +115,17 @@
                         </tr>
                         <tr>
                           <td style="font-weight: bold; padding-left: 70px;">
+                            PPN
+                          </td>
+                          <td style="font-weight: bold;">
+                            :
+                          </td>
+                          <td>
+                              <?php echo $profile['tax_ppn'].'%';?>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight: bold; padding-left: 70px;">
                             Diedit
                           </td>
                           <td style="font-weight: bold;">

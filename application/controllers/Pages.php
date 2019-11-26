@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pages extends CI_Controller {
-
+ 
 	function index($page = 'dashboard')
 	{
 		if(!$this->session->userdata('logged_in')){
@@ -12,25 +12,35 @@ class Pages extends CI_Controller {
         if (!file_exists(APPPATH.'views/pages/'.$page.'.php')) {
             show_404();
 		}
-		//  get date currently
-        $month = date('n');
+		// ----- get date currently -----
+        // $month = date('n');
         $year = date('Y');
+		$get_month = $this->pages_model->get_max_month($year);
+		$month = $get_month['month'];
         $data['title'] = 'Beranda';
 		$data['date'] = $this->pages_model->get_date($month, $year);
+		$date_id = $data['date']['date_id'];
 		
-        //  purchase order
-		$data['tax'] = 10/100; // optional rolling as CV's decision
+		// ----- purchase order -----
+		$get_ppn = $this->cv_profile_model->get_ppn();
+		$data['tax'] = $get_ppn['tax_ppn']/100;
 		$data['sum_pos'] = $this->pages_model->get_sum_pos($month, $year); // get cost of pos
         $data['pos'] = $this->pages_model->get_total_pos($month, $year); // get how many po've been created
         $data['tot_pos'] = count($data['pos']);
         
-        // get submission slip have been created
-        // $data['sps'] = $this->pages_model->get_total_sps($month, $year);
-        // $data['sps'] = $this->pages_model->get_total_sps($month, $year);
+		// ----- get submission slip have been created -----
+
+		$data['sps'] = $this->needs_model->get_all_sp($date_id);
+		$data['total_sps'] = count($data['sps']);
+		$sum_sps = array(); // create new array bcz result array
+        foreach ($data['sps'] as $key => $value) {
+            $sum_sps[] = $value['nominals'];
+		}
+        $data['nominal_sps'] = array_sum($sum_sps);
         // $data['sps'] = array('1, 2', '2, 2');
         // $data['tot_sps'] = 'need rev '.count($data['sps']);
         
-        // grant cost this month 
+        // ----- grant cost this month -----
         $data['cost'] = $this->pages_model->get_sum_ammount($month, $year);
         $sum = array(); // create new array bcz result array
         foreach ($data['cost'] as $key => $value) {
@@ -38,15 +48,15 @@ class Pages extends CI_Controller {
 		}
         $data['tot_cost'] = array_sum($sum); // we can use this function after get new array which could count
         
-        // get need for this year
+        // ----- get need for this year -----
         $data['needs'] = $this->pages_model->get_needs($year);
         
-        // get purchase order list deadline
+        // ----- get purchase order list deadline -----
 		$data['deadline_pos'] = $this->pages_model->get_deadline_pos($month, $year);
 		
         // $data['test']  = $this->pages_model->fetch_data();
         //  $data['test'] = $this->pages_model->fetch_data();
-        //  var_dump($data['cost']);
+        //  var_dump($data['nominal_sps']);
         //  var_dump($data['cost']);
         //  var_dump($data['test']);
 

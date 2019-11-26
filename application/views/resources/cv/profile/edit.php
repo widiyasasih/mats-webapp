@@ -128,6 +128,16 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
+                          <label class="bmd-label-floating" style="font-size:11px;">PPN &nbsp<i>(%)</i><font color="red">*</font></label>
+                          <input type="text" name="tax_ppn" class="form-control" value="<?php echo $profile['tax_ppn'];?>">
+                          <font color="red"><i><?php echo form_error('tax_ppn', '<div class="error">', '</div>'); ?></i></font>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
                           <label class="bmd-label-floating" style="font-size:11px;">Deskripsi &nbsp<i>(tanpa penulisan Jalan)</i><font color="red">*</font></label>
                           <textarea name="description" class="form-control" value="<?php echo $profile['description'];?>">
                           <?php echo $profile['description'];?>

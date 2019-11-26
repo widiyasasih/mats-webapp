@@ -5,7 +5,7 @@
           <div class="row">
             <div class="col-md-12" id="">
               <div class="card">
-                <div class="card-header card-header-danger">
+                <div class="card-header card-header-primary">
                   <div class="card-title">
                     <ul class="navbar-nav pull-left">
                       <li class="nav-item dropdown">
@@ -18,9 +18,15 @@
                     </ul>
                     <ul class="navbar-nav pull-right nav-tabs">
                       <li class="nav-item">
-                        <a class="nav-link active" title="Tambah SP" href="<?php echo site_url('needs/add_sp/'.$po_id);?>">
+                        <a class="nav-link active" title="Tambah Slip Pengajuan" href="add_sp" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">add</i>
+                            <!-- <div class="ripple-container"></div> -->
                         </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                          <?php foreach ($pos as $po) { ?>
+                            <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/add_sp/'.$po['po_id']);?>"><?php echo 'No.PO : '.$po['no'].'/'.$po['initial'].'/'.$po['romawi'].'/'.$po['year'].' - Supplier : '.$po['supplier_name'];?></a>
+                          <?php } ?>
+                        </div>
                       </li>
                     </ul>
                   </div>
@@ -40,7 +46,10 @@
                             echo'
                             <thead class=" text-primary">
                             <th class="text-center">
-                              No. SP
+                              No.
+                            </th>
+                            <th class="text-left">
+                              No. PO
                             </th>
                             <th>
                               Tanggal Pengajuan
@@ -75,6 +84,9 @@
                             <td class="text-center">
                             <?php echo $no++;?>
                             </td>
+                            <td class="text-left">
+                            <?php echo $sp['no'].'/'.$sp['initial'].'/'.$sp['romawi'].'/'.$sp['year'];?>
+                            </td>
                             <td>
                             <?php echo date('d/m/Y', strtotime($sp['date_submission']));?>
                             </td>
@@ -87,10 +99,10 @@
                             <td class="text-center" style="word-wrap:break-word;width:150px">
                             <?php echo $sp['pcs'].' ('.$sp['items'].' jenis barang)'; ?>
                             </td>
-                            <td class="text-center" style="word-wrap:break-word;width:150px">
+                            <td class="text-center" style="">
                             <?php echo $sp['description'];?>
                             </td>
-                            <td class="text-center" style="word-wrap:break-word;width:150px">
+                            <td class="text-center" style="">
                             <?php echo $sp['created_by_nm']; ?>
                             </td>
                             <td class="text-center">
@@ -111,7 +123,7 @@
                               </a>
                               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
                                   <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/edit_sp/'.$sp['sp_id']);?>">Edit</a>
-                                  <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/delete_sp/'.$sp['sp_id'].'/'.$po_id);?>">Delete</a>
+                                  <a class="dropdown-item" style="color:black;" href="<?php echo site_url('needs/delete_sp/'.$sp['sp_id']);?>">Delete</a>
                               </div>
                               </span>
                             </td>
@@ -130,7 +142,7 @@
               <div class="col-md-12">
                   <ul class="navbar-nav pull-left">
                     <li class="nav-item dropdown">
-                      <a class="nav-link" href="<?php echo site_url('needs/view/'.$date['dateneed_id'])?>">
+                      <a class="nav-link" href="<?php echo site_url('needs/view/'.$date)?>">
                         <i title="Kembali" class="material-icons">arrow_back</i> Kembali
                         <p class="d-lg-none d-md-block">
                           Kembali

@@ -6,6 +6,13 @@
             $this->load->database();
         }
 
+        public function get_ppn($id = 1)
+        {
+            $this->db->select('tax_ppn');
+            $query = $this->db->get_where('main_cv_profile', array('id' => $id));
+            return $query->row_array();
+        }
+
         public function get_data($id = 1)
         {
             $query = $this->db->get_where('main_cv_profile', array('id' => $id));
@@ -33,6 +40,7 @@
                 'email' => $this->input->post('email'), 
                 'website' => $this->input->post('website'), 
                 'address' => $this->input->post('address'),
+                'tax_ppn' => $this->input->post('tax_ppn'),
                 'description' => $this->input->post('description'),
             );
             $this->db->where('id', $id);
