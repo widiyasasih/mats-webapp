@@ -5,7 +5,7 @@
         {
             $data['title'] = 'Member Login';
             // set rules of validation error
-            // edited on master
+            // edited
             if ($this->form_validation->run() === FALSE) {
                 // if not field then keep on login view
                 $this->load->view('doors/login', $data);
