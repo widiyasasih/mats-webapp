@@ -59,11 +59,11 @@
                         <th>
                           Nama Barang
                         </th>
-                        <th colspan="2" class="text-center">
-                          Harga
-                        </th>
                         <th class="text-center">
                           Qty
+                        </th>
+                        <th colspan="2" class="text-center">
+                          Harga
                         </th>
                         <th class="text-center" colspan="2">
                           Nominal
@@ -93,14 +93,6 @@
                             echo $item['item_name'];
                             ?>
                           </td>
-                          <td class="form-group text-right">
-                            Rp.
-                            <input class="<?php echo 'prc'.$key; ?>" value="<?php echo $item['custom_price']; ?>" style="text-align:center; width: 100px;" maxlength="50" size="6" type="hidden" name="prc[<?php echo $key; ?>]">
-                            <span style="text-align:center;"><?php echo $item['custom_price']; ?></span>
-                          </td>
-                          <td class="text-left">
-                            <?php echo ' / '.$item['unit'];?>
-                          </td>
                           <td class="form-group text-center">
                             <label for=""></label>
                             <span style="text-align:center;"><?php echo $item['qty']; ?></span>
@@ -124,6 +116,14 @@
                                 <div class="ripple-container"></div>
                               <!-- </a> -->
                             </a>
+                          </td>
+                          <td class="form-group text-right">
+                            Rp.
+                            <input class="<?php echo 'prc'.$key; ?>" value="<?php echo $item['custom_price']; ?>" style="text-align:center; width: 100px;" maxlength="50" size="6" type="hidden" name="prc[<?php echo $key; ?>]">
+                            <span style="text-align:center;"><?php echo $item['custom_price']; ?></span>
+                          </td>
+                          <td class="text-left">
+                            <?php echo ' / '.$item['unit'];?>
                           </td>
                           <td class="form-group text-right">
                             <font color="#9C27B0"><b>

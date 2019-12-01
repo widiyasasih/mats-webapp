@@ -30,7 +30,7 @@
                   <div class="row">
                     <!-- <p class="card-category result-sps">
                     <span class="text-primary"><i class="fa fa-long-arrow-right"></i></span><small> hasil pencarian cetakan</small> -->
-                    <div id="result"></div>
+                    <!-- <div id="result"></div> -->
                     <!-- </p> -->
                     <!-- <div style="clear:both"></div> -->
                     <div class="table-responsive">

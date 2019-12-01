@@ -23,7 +23,7 @@ $route['resources/update_position'] = 'resources/personincharges/update_position
 $route['resources/delete_position/(:any)'] = 'resources/personincharges/delete_position/$1';
 
 $route['livesearch'] = 'livesearch/index';
-$route['molds'] = 'molds/index';
+$route['molds'] = 'molds/index';            
 $route['racks'] = 'racks/index';
 
 // $route['needs/edit_po/(:any)'] = 'needs/edit_po/$1';

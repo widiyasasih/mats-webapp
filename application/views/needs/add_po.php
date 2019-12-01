@@ -186,7 +186,7 @@
                               </label>
                                 <input type="hidden" name="item[<?php echo $key; ?>]" value="<?php echo $item['item_id']; ?>">
                                 <input type="hidden" name="date" value="<?php echo $date['date_id']; ?>">
-                                <input type="hidden" name="po_id" value="<?php echo $date['po_id']; ?>">
+                                <input type="hidden" name="po_id" value="<?php echo $id_po['id']; ?>">
                             </div>
                           </td>
                           <td class="">

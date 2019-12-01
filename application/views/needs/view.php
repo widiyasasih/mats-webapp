@@ -114,7 +114,6 @@
                             </div>  
                             </h4>
                           </div>
-                        </label>
                       </div>
                     </div>
                   </div>

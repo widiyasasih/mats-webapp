@@ -346,7 +346,7 @@
             $data['branchs'] = $this->cv_branchs_model->get_data();
             $data['title'] = 'Tambah Purchase Order Bulan '.$data['date']['month'].' '.$data['date']['year'];
             $data['model_unselected'] = $this->needs_model->get_model_unselected($date_id);
-            var_dump($data['items']);
+            // var_dump($data['items']);
             
             //-----> sum nominal
             $sum_nominal = array();
@@ -572,10 +572,10 @@
                 redirect('login');
             }
 
-            $data['title'] = 'Slip Pengajuan';
             $data['po_id'] = $id;
             $data['date'] = $this->needs_model->get_po_by_id($id);
             $data['sps'] = $this->needs_model->get_sps($id);
+            $data['title'] = 'Slip Pengajuan PO No : '.$data['date']['no'].'/'.$data['date']['initial'].'/'.$data['date']['romawi'].'/'.$data['date']['year'] ;
             
             // $modified_at = $this->needs_model->get_max_modified_at($id);
             // $data['items_po'] = $this->needs_model->view_items_po($id);
@@ -583,7 +583,7 @@
             // // $data['max_mod_at'] = max($modified_at);
 
             // var_dump($data['po_id']);
-            // var_dump($data['sps']);
+            // var_dump($data['date']);
             // var_dump($modified_at);
             
             $this->load->view('templates/header', $data);
@@ -602,11 +602,13 @@
             $data['alert'] = $this->form_validation->set_rules('description', 'Deskripsi', 'required', 
                 array('required' => 'Deskripsi harus diisi'));
 
-            $data['title'] = 'Tambah Slip Pengajuan';
             $data['po'] = $this->needs_model->view_po($id);
+            $data['sps'] = $this->needs_model->get_sps($id);
+            $data['sp'] = count($data['sps']);
+            $no_sp = $data['sp']+1;
             $data['id_sp'] = $this->needs_model->get_id_sp();
             $data['items'] = $this->needs_model->get_items_po($id);
-            // var_dump($data['items']);
+            $data['title'] = 'Tambah Slip Pengajuan ke '.$no_sp;
             // $id_po = $id;
             // var_dump($_POST);
             if ($this->form_validation->run() === FALSE) {

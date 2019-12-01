@@ -349,7 +349,7 @@
 
             $this->db->select('i.*, i.id item_id, u.unit, u.id as id_unit, m.*, md.*, SUM(m.total) totals,
                                GROUP_CONCAT(DISTINCT CONCAT(md.model, "</td><td>: &nbsp " , m.total, "&nbsp pcs. ", IF(m.custom_price>0, 
-                                  CONCAT("(Rp.", m.custom_price, "/", unit, ")<font color=red>**</font>"), CONCAT("(Rp.", i.price, "/", unit, ")"))) 
+                                  CONCAT("(Rp.", m.custom_price, "/", unit, ")<font color=red>*</font>"), CONCAT("(Rp.", i.price, "/", unit, ")"))) 
                                   ORDER BY m.total SEPARATOR "</tr><tr><td>") as final_total,
                                GROUP_CONCAT(DISTINCT CONCAT(md.model, "&nbsp (" , m.total, " pcs.)") ORDER BY m.total SEPARATOR " | ") as hover_result,
                                SUM((m.total*m.custom_price)+(IF(m.custom_price=0,(m.total)*(i.price),0))) nominals');
@@ -595,7 +595,7 @@
             $result = array_filter($delist, function($v, $k) {
                 return $v == ''; // $k is unset to ignore
             }, ARRAY_FILTER_USE_BOTH);
-            var_dump($result);
+            // var_dump($result);
 
             foreach ($result as $i => $value)
             {
@@ -663,8 +663,11 @@
 
         public function get_po_by_id($id)
         {
-            $this->db->select('p.dateneed_id');
-            $query = $this->db->get_where('purchase_order p', array('id' => $id))->row_array();
+            $this->db->select('p.dateneed_id, p.no, d.year, mon.month, mon.romawi, cv.initial');
+            $this->db->join('dateneeds as d', 'd.id = p.dateneed_id' ,'LEFT');
+            $this->db->join('main_cv_profile as cv', 'cv.id = p.cv_id' ,'LEFT');
+            $this->db->join('months as mon', 'mon.id = d.month' ,'LEFT');
+            $query = $this->db->get_where('purchase_order p', array('p.id' => $id))->row_array();
             return $query;
             // var_dump($query);
         }
@@ -874,6 +877,7 @@
                              ) r
                              WHERE (po_id = '.$id.' AND id_po = '.$id.') AND (po_id != 0 AND sp_id != 0)
                              GROUP BY sp_id
+                             ORDER BY sp_id
                              ');
             return $query->result_array();
             // var_dump($query);
@@ -1021,8 +1025,8 @@
             $result = array_filter($delist, function($v, $k) {
                 return $v !== ''; // $k is unset to ignore
             }, ARRAY_FILTER_USE_BOTH);
-            var_dump($delist);
-            var_dump($result);
+            // var_dump($delist);
+            // var_dump($result);
             foreach ($result as $i => $value)
             {
                 $data = array(
